@@ -23,17 +23,3 @@ export const deleteUser = async (id) => {
 export const updateUser = async (id, newBody) => {
   await User.findByIdAndUpdate(id, newBody);
 };
-
-export const authenticateUser = async (name, password) => {
-  const user = await User.findOne({ name });
-  if (!user) {
-    throw new Error("User not found");
-  }
-
-  const isPasswordMatch = await bcrypt.compare(password, user.password);
-  if (!isPasswordMatch) {
-    throw new Error("Incorrect password");
-  }
-
-  return user;
-};
