@@ -2,6 +2,7 @@ import express from "express";
 import connectToDatabase from "./config/database";
 import bodyParser from "body-parser";
 import userController from "./controllers/users";
+import authRouter from "./controllers/auth";
 
 const app = express();
 const port = 3000;
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/users", userController);
+app.use("/auth", authRouter);
 
 app.listen(port, () => {
   console.log(`App rodando na porta ${port}`);

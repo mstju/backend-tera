@@ -1,6 +1,5 @@
 import { Router } from "express";
 import User from "../models/users";
-const bcrypt = require("bcrypt");
 import {
   listUsers,
   createUser,
@@ -9,12 +8,24 @@ import {
 } from "../services/users";
 const router = Router();
 
-router.get("/", async (req, res) => {
+router.get("/all", async (req, res) => {
   const userList = await listUsers();
   res.send({
     message: `Existem ${userList.length} usuários na lista`,
     users: userList,
   });
+});
+
+router.get("/:userId", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    if (!user) {
+      return res.status(404).send({ message: "Usuário não encontrado." });
+    }
+    res.send({ message: "Usuário encontrado.", user });
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
 router.post("/", async (req, res) => {
@@ -37,30 +48,6 @@ router.delete("/:userId", async (req, res) => {
 router.put("/:userId", async (req, res) => {
   await updateUser(req.params.userId, req.body);
   res.send("Dados atualizados");
-});
-
-const authenticateUser = async (name, password) => {
-  const user = await User.findOne({ name });
-  if (!user) {
-    throw new Error("Nome de usuário não encontrado");
-  }
-
-  const isPasswordMatch = await bcrypt.compare(password, user.password);
-  if (!isPasswordMatch) {
-    throw new Error("Senha incorreta");
-  }
-
-  return user;
-};
-
-router.post("/login", async (req, res) => {
-  try {
-    const { name, password } = req.body;
-    const user = await authenticateUser(name, password);
-    res.send({ user, message: "Login realizado com sucesso" });
-  } catch (error) {
-    res.status(401).send({ error: error.message });
-  }
 });
 
 export default router;

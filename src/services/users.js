@@ -1,7 +1,5 @@
-import connectToDatabase from "../config/database";
 import User from "../models/users";
 const bcrypt = require("bcrypt");
-import jwt from "jsonwebtoken";
 
 export const listUsers = async () => {
   const users = await User.find();
