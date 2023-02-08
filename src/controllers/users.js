@@ -29,6 +29,13 @@ router.get("/:userId", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
+  const { name, email, password } = req.body;
+  if (!name || !email || !password) {
+    return res
+      .status(400)
+      .send({ message: "Por favor, forneça todos os campos obrigatórios." });
+  }
+
   try {
     const user = await createUser(req.body);
     res.status(201).send({ message: "Usuário cadastrado com sucesso.", user });
