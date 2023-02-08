@@ -16,6 +16,18 @@ const UserSchema = new mongoose.Schema({
     },
   },
   password: { type: String, required: true },
+  phone: {
+    type: String,
+    required: true,
+    validate: {
+      validator: function (value) {
+        return validator.isMobilePhone(value, "pt-BR");
+      },
+      message: "Número de telefone inválido.",
+    },
+  },
+  birthDate: { type: Date, required: true },
+  zip: { type: String, required: true },
 });
 
 export default mongoose.models.User || mongoose.model("User", UserSchema);
