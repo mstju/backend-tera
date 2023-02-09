@@ -1,13 +1,7 @@
 import { Router } from "express";
 const bcrypt = require("bcrypt");
-
 import User from "../models/users";
-import {
-  listUsers,
-  createUser,
-  deleteUser,
-  updateUser,
-} from "../services/users";
+import { listUsers, deleteUser, updateUser } from "../services/users";
 const router = Router();
 
 router.get("/all", async (req, res) => {
@@ -64,6 +58,7 @@ router.post("/", async (req, res) => {
       .status(400)
       .send({ message: "Por favor, forneça a data de nascimento." });
   }
+
   if (!cpfCnpj) {
     return res
       .status(400)
