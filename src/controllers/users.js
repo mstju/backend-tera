@@ -1,5 +1,5 @@
 import { Router } from "express";
-const bcrypt = require("bcrypt");
+import bcrypt from "bcrypt";
 import User from "../models/users";
 import { listUsers, deleteUser, updateUser } from "../services/users";
 const router = Router();

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import User from "../models/users";
-const bcrypt = require("bcrypt");
+import bcrypt from "bcrypt";
 const router = Router();
 
 const authenticateUser = async (name, password) => {
