@@ -1,4 +1,6 @@
 import { Router } from "express";
+const bcrypt = require("bcrypt");
+
 import User from "../models/users";
 import {
   listUsers,
@@ -75,6 +77,9 @@ router.post("/", async (req, res) => {
   }
 
   try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(senha, salt);
+
     const user = new User({
       nome,
       sobrenome,
@@ -82,7 +87,7 @@ router.post("/", async (req, res) => {
       celular,
       dataNascimento,
       cpfCnpj,
-      senha,
+      senha: hashedPassword,
       cep,
     });
     await user.save();
