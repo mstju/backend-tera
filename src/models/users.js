@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import validator from "validator";
 
-const UserSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   nome: {
     type: String,
     required: true,
@@ -52,4 +52,4 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.models.User || mongoose.model("User", UserSchema);
+export default mongoose.models.User || mongoose.model("User", userSchema);
