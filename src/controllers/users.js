@@ -29,15 +29,63 @@ router.get("/:userId", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { name, email, password } = req.body;
-  if (!name || !email || !password) {
+  const {
+    nome,
+    sobrenome,
+    email,
+    celular,
+    dataNascimento,
+    cpfCnpj,
+    senha,
+    cep,
+  } = req.body;
+  if (!nome) {
     return res
       .status(400)
-      .send({ message: "Por favor, forneça todos os campos obrigatórios." });
+      .send({ message: "Por favor, forneça o primeiro nome." });
+  }
+  if (!sobrenome) {
+    return res.status(400).send({ message: "Por favor, forneça o sobrenome." });
+  }
+  if (!email) {
+    return res
+      .status(400)
+      .send({ message: "Por favor, forneça o endereço de email." });
+  }
+  if (!celular) {
+    return res
+      .status(400)
+      .send({ message: "Por favor, forneça o número de telefone." });
+  }
+  if (!dataNascimento) {
+    return res
+      .status(400)
+      .send({ message: "Por favor, forneça a data de nascimento." });
+  }
+  if (!cpfCnpj) {
+    return res
+      .status(400)
+      .send({ message: "Por favor, forneça o CPF ou CNPJ." });
+  }
+  if (!senha) {
+    return res.status(400).send({ message: "Por favor, forneça a senha." });
+  }
+  if (!cep) {
+    return res.status(400).send({ message: "Por favor, forneça o cep." });
   }
 
   try {
-    const user = await createUser(req.body);
+    const user = new User({
+      nome,
+      sobrenome,
+      email,
+      celular,
+      dataNascimento,
+      cpfCnpj,
+      senha,
+      cep,
+    });
+    await user.save();
     res.status(201).send({ message: "Usuário cadastrado com sucesso.", user });
   } catch (error) {
     if (error.code === 11000) {
